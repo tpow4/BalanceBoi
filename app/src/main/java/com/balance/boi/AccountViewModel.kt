@@ -2,6 +2,7 @@ package com.balance.boi
 
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
+import com.balance.boi.database.Account
 import kotlin.random.Random
 
 class AccountViewModel : ViewModel() {
