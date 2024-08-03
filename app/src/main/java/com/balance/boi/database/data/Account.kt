@@ -1,4 +1,4 @@
-package com.balance.boi.database
+package com.balance.boi.database.data
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -18,5 +18,5 @@ data class Account(
 @PrimaryKey(autoGenerate = true) val id: Int = 0,
 val institutionId: Int, // Foreign key to FinancialInstitution
 val name: String,
-val taxType: String // New field for tax type
+val taxType: String
 )

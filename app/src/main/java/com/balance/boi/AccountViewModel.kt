@@ -1,21 +1,17 @@
 package com.balance.boi
 
-import androidx.compose.runtime.toMutableStateList
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.balance.boi.database.Account
-import kotlin.random.Random
+import androidx.lifecycle.asLiveData
+import com.balance.boi.database.data.Account
+import androidx.lifecycle.viewModelScope
+import com.balance.boi.database.AppRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AccountViewModel : ViewModel() {
-    private val _accounts = getTestAccounts().toMutableStateList()
-    val accounts: List<Account>
-        get() = _accounts
+@HiltViewModel
+class AccountViewModel @Inject constructor(private val repository: AppRepository) : ViewModel() {
 
-    fun remove(item: Account) {
-        _accounts.remove(item)
-    }
+    val allAccounts = repository.getAllAccounts().asLiveData()
 }
-
-private fun getTestAccounts() =
-    List(30) { i ->
-        Account(name = "Test $i", institutionName =  "Bank $i", balance = Random.nextInt())
-    }

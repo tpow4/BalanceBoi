@@ -1,4 +1,4 @@
-package com.balance.boi.database
+package com.balance.boi.database.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

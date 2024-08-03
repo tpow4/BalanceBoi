@@ -31,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,7 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.balance.boi.database.Account
+import com.balance.boi.database.data.Account
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -94,10 +95,9 @@ private fun Account(account: Account) {
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = account.institutionName, fontSize = 20.sp)
                 Text(text = account.name)
             }
-            Text(text = account.balance.toString(), fontSize = 28.sp)
+            Text(text = 0.toString(), fontSize = 28.sp)
         }
     }
 }
@@ -107,8 +107,9 @@ private fun Accounts(
     modifier: Modifier = Modifier,
     accountViewModel: AccountViewModel = viewModel()
 ) {
+    val accounts by accountViewModel.allAccounts.observeAsState(emptyList())
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-        items(items = accountViewModel.accounts) { account ->
+        items(accounts) { account ->
             Account(account)
         }
     }

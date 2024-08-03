@@ -1,4 +1,4 @@
-package com.balance.boi.database
+package com.balance.boi.database.data
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -15,7 +15,7 @@ import java.sql.Date
         )
     ]
 )
-data class BalanceEntry(
+data class Balance(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val accountId: Int, // Foreign key to Account
     val date: Date,
