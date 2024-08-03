@@ -30,6 +30,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -62,9 +65,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Account(account: Account) {
+    val isSelected by remember {
+        mutableStateOf(false)
+    }
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp),
+            containerColor =
+            if (isSelected) MaterialTheme.colorScheme.primaryContainer
+            else
+                MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
