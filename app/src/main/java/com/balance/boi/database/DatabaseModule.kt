@@ -2,6 +2,9 @@ package com.balance.boi.database
 
 import android.content.Context
 import androidx.room.Room
+import com.balance.boi.database.dao.AccountDao
+import com.balance.boi.database.dao.BalanceDao
+import com.balance.boi.database.dao.InstitutionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +24,23 @@ object  DatabaseModule {
             AppDatabase::class.java,
             "app-database"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountDao(appDatabase: AppDatabase): AccountDao {
+        return appDatabase.accountDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBalanceDao(appDatabase: AppDatabase): BalanceDao {
+        return appDatabase.balanceDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideInstitutionDao(appDatabase: AppDatabase): InstitutionDao {
+        return appDatabase.institutionDao()
     }
 }

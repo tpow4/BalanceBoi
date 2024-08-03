@@ -2,6 +2,7 @@ package com.balance.boi.database.data
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -12,11 +13,12 @@ import androidx.room.PrimaryKey
             childColumns = ["institutionId"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index(value = ["institutionId"])]
 )
 data class Account(
 @PrimaryKey(autoGenerate = true) val id: Int = 0,
-val institutionId: Int, // Foreign key to FinancialInstitution
+val institutionId: Int,
 val name: String,
 val taxType: String
 )
