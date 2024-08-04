@@ -15,6 +15,6 @@ interface BalanceDao {
     @Delete
     suspend fun delete(balance: Balance)
 
-    @Query("SELECT * FROM Balance WHERE accountId = :accountId ORDER BY date")
+    @Query("SELECT * FROM Balance WHERE balanceAccountId = :accountId ORDER BY balanceDate")
     fun getBalanceHistoryForAccount(accountId: Int): Flow<List<Balance>>
 }

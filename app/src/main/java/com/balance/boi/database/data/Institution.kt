@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Institution(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val name: String
+    @PrimaryKey(autoGenerate = true) val institutionId: Int = 0,
+    val institutionName: String
 )

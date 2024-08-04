@@ -56,7 +56,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.balance.boi.AccountViewModel
 import com.balance.boi.R
-import com.balance.boi.database.data.Account
+import com.balance.boi.database.data.AccountWithBalances
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -137,7 +137,7 @@ private fun NewAccountScreen(navController: NavController, viewModel: AccountVie
 }
 
 @Composable
-private fun Account(account: Account) {
+private fun AccountCard(accountWithBalances: AccountWithBalances) {
     val isSelected by remember {
         mutableStateOf(false)
     }
@@ -166,9 +166,9 @@ private fun Account(account: Account) {
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = account.name)
+                Text(text = accountWithBalances.account.accountName)
             }
-            Text(text = 0.toString(), fontSize = 28.sp)
+            Text(text = accountWithBalances.balances.last().balanceAmount.toString(), fontSize = 28.sp)
         }
     }
 }
@@ -180,8 +180,8 @@ private fun Accounts(
 ) {
     val accounts by accountViewModel.allAccounts.observeAsState(emptyList())
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-        items(accounts) { account ->
-            Account(account)
+        items(accounts) { accountWithBalances ->
+            AccountCard(accountWithBalances)
         }
     }
 }

@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.balance.boi.database.data.Account
+import com.balance.boi.database.data.AccountWithBalances
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,9 +17,11 @@ interface AccountDao {
     @Delete
     suspend fun delete(account: Account)
 
+    @Transaction
     @Query("SELECT * FROM Account")
-    fun getAccounts(): Flow<List<Account>>
+    fun getAccounts(): Flow<List<AccountWithBalances>>
 
-    @Query("SELECT * FROM Account WHERE institutionId =:institutionId")
-    fun getAccountsForInstitution(institutionId: Int): Flow<List<Account>>
+    @Transaction
+    @Query("SELECT * FROM Account WHERE accountInstitutionId =:institutionId")
+    fun getAccountsForInstitution(institutionId: Int): Flow<List<AccountWithBalances>>
 }

@@ -1,24 +1,20 @@
 package com.balance.boi.database.data
 
+import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
-@Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = Institution::class,
-            parentColumns = ["id"],
-            childColumns = ["institutionId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
-    indices = [Index(value = ["institutionId"])]
-)
+@Entity
 data class Account(
-@PrimaryKey(autoGenerate = true) val id: Int = 0,
-val institutionId: Int,
-val name: String,
-val taxType: String
+    @PrimaryKey(autoGenerate = true) val accountId: Int = 0,
+    val accountInstitutionId: Int,
+    val accountName: String,
+    val accountTaxType: String
+)
+
+data class AccountWithBalances(
+    @Embedded val account: Account,
+    @Relation(parentColumn = "accountId", entityColumn = "balanceAccountId")
+    val balances: List<Balance>
 )
