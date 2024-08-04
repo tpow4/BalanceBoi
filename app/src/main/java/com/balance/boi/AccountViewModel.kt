@@ -10,4 +10,5 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(private val repository: AppRepository) : ViewModel() {
 
     val allAccounts = repository.getAllAccounts().asLiveData()
+    val allInstitutions = repository.getAllInstitutions().asLiveData()
 }

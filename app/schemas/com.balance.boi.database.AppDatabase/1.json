@@ -2,44 +2,12 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1bd99d0998302b31c0ec927020d0fad5",
+    "identityHash": "bf6cbbe0c6bee88df73f5f46043f81bd",
     "entities": [
       {
         "tableName": "Institution",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`institutionId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `institutionName` TEXT NOT NULL)",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "id"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "Account",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `institutionId` INTEGER NOT NULL, `name` TEXT NOT NULL, `taxType` TEXT NOT NULL, FOREIGN KEY(`institutionId`) REFERENCES `Institution`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "institutionId",
             "columnName": "institutionId",
@@ -47,14 +15,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "taxType",
-            "columnName": "taxType",
+            "fieldPath": "institutionName",
+            "columnName": "institutionName",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -62,44 +24,16 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "institutionId"
           ]
         },
-        "indices": [
-          {
-            "name": "index_Account_institutionId",
-            "unique": false,
-            "columnNames": [
-              "institutionId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_Account_institutionId` ON `${TABLE_NAME}` (`institutionId`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "Institution",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "institutionId"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
+        "indices": [],
+        "foreignKeys": []
       },
       {
-        "tableName": "Balance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `accountId` INTEGER NOT NULL, `date` INTEGER NOT NULL, `balance` REAL NOT NULL, FOREIGN KEY(`accountId`) REFERENCES `Account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "Account",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`accountId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `accountInstitutionId` INTEGER NOT NULL, `accountName` TEXT NOT NULL, `accountTaxType` TEXT NOT NULL)",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "accountId",
             "columnName": "accountId",
@@ -107,14 +41,58 @@
             "notNull": true
           },
           {
-            "fieldPath": "date",
-            "columnName": "date",
+            "fieldPath": "accountInstitutionId",
+            "columnName": "accountInstitutionId",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "balance",
-            "columnName": "balance",
+            "fieldPath": "accountName",
+            "columnName": "accountName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accountTaxType",
+            "columnName": "accountTaxType",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "accountId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Balance",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`balanceId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `balanceAccountId` INTEGER NOT NULL, `balanceDate` INTEGER NOT NULL, `balanceAmount` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "balanceId",
+            "columnName": "balanceId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceAccountId",
+            "columnName": "balanceAccountId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceDate",
+            "columnName": "balanceDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceAmount",
+            "columnName": "balanceAmount",
             "affinity": "REAL",
             "notNull": true
           }
@@ -122,39 +100,17 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "balanceId"
           ]
         },
-        "indices": [
-          {
-            "name": "index_Balance_accountId",
-            "unique": false,
-            "columnNames": [
-              "accountId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_Balance_accountId` ON `${TABLE_NAME}` (`accountId`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "Account",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "accountId"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1bd99d0998302b31c0ec927020d0fad5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bf6cbbe0c6bee88df73f5f46043f81bd')"
     ]
   }
 }

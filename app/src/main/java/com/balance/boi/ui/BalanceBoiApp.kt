@@ -24,7 +24,10 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,7 +52,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -61,9 +63,13 @@ import com.balance.boi.database.data.AccountWithBalances
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NewAccountScreen(navController: NavController, viewModel: AccountViewModel) {
-    var institution by remember { mutableStateOf("") }
     var accountType by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+
+    val institutions by viewModel.allInstitutions.observeAsState(emptyList())
+    val institutionOptions = institutions.map { it.institutionName }
+    var selectedOptionText by remember { mutableStateOf("Select institution...") }
 
     Scaffold(
         topBar = {
@@ -78,7 +84,16 @@ private fun NewAccountScreen(navController: NavController, viewModel: AccountVie
                     }
                 },
                 actions = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+//                        viewModel.insertAccount(
+//                            Account(
+//                                accountName = accountName,
+//                                accountInstitutionId = 1,
+//                                accountTaxType =
+//                            )
+//                        )
+                        navController.popBackStack()
+                    }) {
                         Icon(Icons.Filled.Done, "Save")
                     }
                 }
@@ -89,19 +104,45 @@ private fun NewAccountScreen(navController: NavController, viewModel: AccountVie
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(16.dp)
-        ) {OutlinedTextField(
-            value = institution,
-            onValueChange = { institution = it },
-            label = { Text(stringResource(R.string.new_account_institution)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = null
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-            supportingText = { Text(stringResource(R.string.institution_helper)) }
         )
+        {
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(),
+                    value = selectedOptionText,
+                    onValueChange = { },
+                    readOnly = true,
+                    label = { Text(stringResource(R.string.new_account_institution)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.ShoppingCart,
+                            contentDescription = null
+                        )
+                    },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    supportingText = { Text(stringResource(R.string.institution_helper)) }
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                )
+                {
+                    institutionOptions.forEach { selectionOption ->
+                        DropdownMenuItem(
+                            text = { Text(selectionOption) },
+                            onClick = {
+                                selectedOptionText = selectionOption
+                                expanded = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        )
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -121,7 +162,8 @@ private fun NewAccountScreen(navController: NavController, viewModel: AccountVie
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(value = description,
+            OutlinedTextField(
+                value = description,
                 onValueChange = { description = it },
                 label = { Text(stringResource(R.string.account_description)) },
                 leadingIcon = {
@@ -135,6 +177,7 @@ private fun NewAccountScreen(navController: NavController, viewModel: AccountVie
         }
     }
 }
+
 
 @Composable
 private fun AccountCard(accountWithBalances: AccountWithBalances) {
@@ -153,11 +196,13 @@ private fun AccountCard(accountWithBalances: AccountWithBalances) {
         ),
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp)
         ) {
-            Image(painter = painterResource(id = R.drawable.ic_launcher_background),
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_background),
                 contentDescription = "icon placeholder",
                 modifier = Modifier
                     .size(50.dp)
@@ -168,7 +213,10 @@ private fun AccountCard(accountWithBalances: AccountWithBalances) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = accountWithBalances.account.accountName)
             }
-            Text(text = accountWithBalances.balances.last().balanceAmount.toString(), fontSize = 28.sp)
+            Text(
+                text = accountWithBalances.balances.last().balanceAmount.toString(),
+                fontSize = 28.sp
+            )
         }
     }
 }
@@ -176,7 +224,7 @@ private fun AccountCard(accountWithBalances: AccountWithBalances) {
 @Composable
 private fun Accounts(
     modifier: Modifier = Modifier,
-    accountViewModel: AccountViewModel = viewModel()
+    accountViewModel: AccountViewModel
 ) {
     val accounts by accountViewModel.allAccounts.observeAsState(emptyList())
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
@@ -188,7 +236,7 @@ private fun Accounts(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun OverviewScreen(navController: NavController, viewModel: AccountViewModel ) {
+private fun OverviewScreen(navController: NavController, viewModel: AccountViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -210,9 +258,13 @@ private fun OverviewScreen(navController: NavController, viewModel: AccountViewM
             modifier = Modifier
                 .fillMaxSize(), color = MaterialTheme.colorScheme.background
         ) {
-            Box(modifier = Modifier.fillMaxSize().padding(padding))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+            )
             {
-                Accounts()
+                Accounts(accountViewModel = viewModel)
             }
         }
     }

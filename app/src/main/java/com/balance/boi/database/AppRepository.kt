@@ -11,7 +11,6 @@ import javax.inject.Inject
 class AppRepository @Inject constructor(private val db: AppDatabase)
 {
     fun getAllAccounts() = db.accountDao().getAccounts()
-
     suspend fun insertAccount(account: Account) = db.accountDao().insert(account)
     suspend fun deleteAccount(account: Account) = db.accountDao().delete(account)
 
@@ -20,7 +19,6 @@ class AppRepository @Inject constructor(private val db: AppDatabase)
     suspend fun insertInstitution(institution: Institution) = db.institutionDao().insert(institution)
     suspend fun deleteInstitution(institution: Institution) = db.institutionDao().deleteInstitution(institution)
 
-    fun getBalancesForAccount(accountId: Int) = db.balanceDao().getBalanceHistoryForAccount(accountId)
     suspend fun insertBalance(balance: Balance) = db.balanceDao().insert(balance)
     suspend fun deleteBalance(balance: Balance) = db.balanceDao().delete(balance)
 
