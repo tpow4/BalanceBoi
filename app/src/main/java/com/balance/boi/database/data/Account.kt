@@ -5,13 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 
-enum class TaxType {
-    ORDINARY,
-    BROKERAGE,
-    ROTH,
-    TAX_FREE
-}
-
 @Entity
 data class Account(
     @PrimaryKey(autoGenerate = true) val accountId: Int = 0,
@@ -25,3 +18,10 @@ data class AccountWithBalances(
     @Relation(parentColumn = "accountId", entityColumn = "balanceAccountId")
     val balances: List<Balance>
 )
+
+enum class TaxType {
+    ORDINARY,
+    BROKERAGE,
+    ROTH,
+    TAX_FREE
+}

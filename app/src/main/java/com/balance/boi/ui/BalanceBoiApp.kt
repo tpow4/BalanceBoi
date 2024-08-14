@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -241,7 +242,13 @@ private fun OverviewScreen(navController: NavController, viewModel: AccountViewM
         topBar = {
             TopAppBar(title = {
                 Text("Overview")
-            })
+            },
+                actions = {
+                    IconButton(onClick = { navController.navigate(Screen.Settings.route) }) {
+                        Icon(Icons.Filled.Settings, contentDescription = "Settings icon")
+                    }
+                }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -270,6 +277,32 @@ private fun OverviewScreen(navController: NavController, viewModel: AccountViewM
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsScreen(navController: NavController) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Settings") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close"
+                        )
+                    }
+                },
+            )
+        }
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        )
+    }
+}
+
 @Composable
 fun BalanceBoiApp() {
     val navController = rememberNavController()
@@ -285,6 +318,10 @@ fun BalanceBoiApp() {
         composable(Screen.AddAccount.route) {
             val viewModel: AccountViewModel = hiltViewModel()
             NewAccountScreen(navController, viewModel)
+        }
+
+        composable(Screen.Settings.route) {
+            SettingsScreen(navController)
         }
     }
 }
