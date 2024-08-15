@@ -1,5 +1,8 @@
 package com.balance.boi.ui
 
+import android.content.res.Resources
+import android.icu.text.NumberFormat
+import android.icu.util.Currency
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -48,8 +51,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -185,6 +190,14 @@ private fun AccountCard(accountWithBalances: AccountWithBalances) {
     val isSelected by remember {
         mutableStateOf(false)
     }
+
+    val latestBalance = accountWithBalances.balances.last().balanceAmount
+    val numberFormatter = NumberFormat.getInstance(NumberFormat.CURRENCYSTYLE)
+    numberFormatter.minimumFractionDigits = 2
+    numberFormatter.maximumFractionDigits = 2
+    numberFormatter.currency = Currency.getInstance("USD")
+    val formattedBalance = numberFormatter.format(latestBalance)
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor =
@@ -215,7 +228,7 @@ private fun AccountCard(accountWithBalances: AccountWithBalances) {
                 Text(text = accountWithBalances.account.accountName)
             }
             Text(
-                text = accountWithBalances.balances.last().balanceAmount.toString(),
+                text = formattedBalance,
                 fontSize = 28.sp
             )
         }

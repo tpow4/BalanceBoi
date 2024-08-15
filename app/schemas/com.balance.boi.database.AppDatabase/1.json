@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bf6cbbe0c6bee88df73f5f46043f81bd",
+    "identityHash": "5ca7a1e1e8bc6a592cde57cdf4e50601",
     "entities": [
       {
         "tableName": "Institution",
@@ -70,7 +70,7 @@
       },
       {
         "tableName": "Balance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`balanceId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `balanceAccountId` INTEGER NOT NULL, `balanceDate` INTEGER NOT NULL, `balanceAmount` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`balanceId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `balanceAccountId` INTEGER NOT NULL, `balanceDate` INTEGER NOT NULL, `balanceAmount` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "balanceId",
@@ -93,7 +93,7 @@
           {
             "fieldPath": "balanceAmount",
             "columnName": "balanceAmount",
-            "affinity": "REAL",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -110,7 +110,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bf6cbbe0c6bee88df73f5f46043f81bd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5ca7a1e1e8bc6a592cde57cdf4e50601')"
     ]
   }
 }
