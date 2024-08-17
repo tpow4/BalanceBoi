@@ -1,0 +1,116 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "5ca7a1e1e8bc6a592cde57cdf4e50601",
+    "entities": [
+      {
+        "tableName": "Institution",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`institutionId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `institutionName` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "institutionId",
+            "columnName": "institutionId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "institutionName",
+            "columnName": "institutionName",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "institutionId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Account",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`accountId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `accountInstitutionId` INTEGER NOT NULL, `accountName` TEXT NOT NULL, `accountTaxType` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "accountId",
+            "columnName": "accountId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accountInstitutionId",
+            "columnName": "accountInstitutionId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accountName",
+            "columnName": "accountName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accountTaxType",
+            "columnName": "accountTaxType",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "accountId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Balance",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`balanceId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `balanceAccountId` INTEGER NOT NULL, `balanceDate` INTEGER NOT NULL, `balanceAmount` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "balanceId",
+            "columnName": "balanceId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceAccountId",
+            "columnName": "balanceAccountId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceDate",
+            "columnName": "balanceDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceAmount",
+            "columnName": "balanceAmount",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "balanceId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5ca7a1e1e8bc6a592cde57cdf4e50601')"
+    ]
+  }
+}

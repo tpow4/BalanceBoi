@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BalanceBoi</string>
+    <string name="account_description">Description</string>
+    <string name="new_account_helper" />
+    <string name="new_account_type">Account Type</string>
+    <string name="institution_helper" />
+    <string name="new_account_institution">Institution</string>
+    <string name="new_account_title">New Account</string>
 </resources>
