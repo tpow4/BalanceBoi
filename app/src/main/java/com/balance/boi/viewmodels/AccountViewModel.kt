@@ -1,4 +1,4 @@
-package com.balance.boi
+package com.balance.boi.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

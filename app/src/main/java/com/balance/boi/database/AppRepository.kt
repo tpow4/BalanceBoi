@@ -1,11 +1,8 @@
 package com.balance.boi.database
 
-import com.balance.boi.database.dao.AccountDao
-import com.balance.boi.database.dao.InstitutionDao
-import com.balance.boi.database.dao.BalanceDao
 import com.balance.boi.database.data.Account
-import com.balance.boi.database.data.Institution
 import com.balance.boi.database.data.Balance
+import com.balance.boi.database.data.Institution
 import javax.inject.Inject
 
 class AppRepository @Inject constructor(private val db: AppDatabase)
