@@ -1,1 +1,1 @@
-Successor to BudgetBoi, this is a Jetpack Compose iteration of a similar idea. 
+Successor to BudgetBoi with Jetpack Compose implementation 
