@@ -5,9 +5,12 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
+import com.balance.boi.utils.CipherUtils.getCipher
+import com.balance.boi.utils.CipherUtils.getOrCreateSecretKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.crypto.Cipher
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +24,10 @@ class BiometricsViewModel @Inject constructor() : ViewModel() {
             .setSubtitle("Log in using your biometric credential")
             .setNegativeButtonText("Cancel")
             .build()
+
+        val cipher = getCipher()
+        val secretKey = getOrCreateSecretKey()
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
         val biometricPrompt = BiometricPrompt(context as FragmentActivity,
             ContextCompat.getMainExecutor(context),
@@ -38,7 +45,7 @@ class BiometricsViewModel @Inject constructor() : ViewModel() {
                 }
             })
 
-        biometricPrompt.authenticate(promptInfo)
+        biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
     }
 }
 
