@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.balance.boi.database.dao.AccountDao
 import com.balance.boi.database.dao.BalanceDao
 import com.balance.boi.database.dao.InstitutionDao
+import com.balance.boi.utils.CipherUtils.getFactoryForPassphrase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +24,9 @@ object DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "app-database"
-        ).build()
+        )
+            .openHelperFactory(getFactoryForPassphrase())
+            .build()
     }
 
     @Provides
